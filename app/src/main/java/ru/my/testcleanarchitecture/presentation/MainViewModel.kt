@@ -12,7 +12,7 @@ class MainViewModel(private val getUserNameUseCase : GetUserNameUseCase,
                     private val passUserNameUseCase: SaveUserNameUseCase) : ViewModel() {
 
     val resultLiveDataMutable = MutableLiveData<String>()
-    val resultliveData: LiveData<String> = resultLiveDataMutable
+    val resultLiveData: LiveData<String> = resultLiveDataMutable
 
     fun save(text : String){
         val resultData : Boolean = passUserNameUseCase.execute(param = SaveUsernameParam(text))
