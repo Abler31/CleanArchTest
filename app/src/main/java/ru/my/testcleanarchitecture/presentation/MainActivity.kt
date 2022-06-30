@@ -9,21 +9,25 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import ru.my.testcleanarchitecture.R
+import ru.my.testcleanarchitecture.app.App
 import ru.my.testcleanarchitecture.data.repository.UserRepositoryImpl
 import ru.my.testcleanarchitecture.data.storage.sharedPrefs.SharedPrefUserStorage
 import ru.my.testcleanarchitecture.domain.usercase.GetUserNameUseCase
 import ru.my.testcleanarchitecture.domain.usercase.SaveUserNameUseCase
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    val repository by lazy {UserRepositoryImpl(SharedPrefUserStorage(context = applicationContext))}
-    val getUserNameUseCase by lazy {GetUserNameUseCase(repository)}
-    val passUserNameUseCase by lazy {SaveUserNameUseCase(repository)}
+    @Inject
+    lateinit var vmFactory: MainViewModelFactory
 
-    private val viewModel: MainViewModel by viewModels{MainViewModelFactory(applicationContext)}
+
+    private val viewModel: MainViewModel by viewModels{vmFactory}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        (applicationContext as App).appComponent.inject(this)
 
         val getDataTextView = findViewById<TextView>(R.id.tv_getText)
         val getDataButton = findViewById<Button>(R.id.btn_getText)
